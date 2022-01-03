@@ -1,0 +1,35 @@
+Chapter 4: The Abstraction: The Process
+
+Process: running instance of a program with its own resources
+
+OS creates the illusion that there is an endless supply of CPUs because of virtualization using time sharing (allowing users to run as many concurrent processes as they want to at the cost of performance (runs more slowly))
+
+Context Switch: give the OS the ability to stop running one program and start running another on a given CPU
+
+Policies: algorithms for making some kind of decision within the OS (ex. scheduling algorithms)
+
+Important registers for machine state (what a program can read or update when running):
+Program Counter
+Link Register (embedded systems)
+Stack pointer
+Frame pointer
+
+Address space: memory that process can access
+
+Process API: create, destroy, wait (for a process to stop running), status (info about the process), misc control (such as suspending a process and resuming after a event)
+
+Process Creation:
+- load code and static data into address space of process
+- programs initially reside on disk (flash-based SSDs in modern systems) in executable format
+- memory allocated for run-time stack (local variables, fn params, return addresses)
+- OS initializes stack with args (ex. argc and argv)
+- some memory allocated for the heap (malloc, free) which is neede for linked lists, hash tables, trees and other higher-level data structures)
+- OS has three file descriptors: input, output, error which are initialized
+- start running program at the entry point main() where OS transfers control of CPU to the newly created process
+
+Process States:
+- Running: process is running on a processor
+- Blocked: process has performed an operation such that it's not ready to run until something else take place (ex. a process makes an I/O request to the disk and is waiting for data from the disk)
+- Ready: process is ready to run but is not running for some reason (ex. another process is running)
+
+Process Data Structures: process list which contans info about all processes in the system. Each entry is found in what is called a process control block (PCB) which is a structure that contains info about a specific process

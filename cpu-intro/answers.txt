@@ -1,0 +1,13 @@
+1. CPU utilization is the sum of work handled by a Central Processing Unit. Computer's usage of processing resources. The CPU utilization should e 100% since the chances that each instruction is a CPU instruction is 100% and both processes have 100.
+
+2. Takes around 11 time units.
+
+3. Takes around 7 time units. Switching the order matters because we can start the process that makes an IO request and while it waits, the other process can execute.
+
+4. It will take the same amount of time as running the 4:100 process first because the flag blocks the other process from executing until the I/O result comes back.
+
+5. 7 time units.
+
+6. The first IO instruction is waiting, then another process executes, then the first process with the three IO instructions executes. This is ineffective because the first process didn't finish.
+
+7. This behavior is different because it runs faster.
