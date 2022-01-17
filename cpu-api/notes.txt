@@ -1,0 +1,34 @@
+Interlude: Process API
+Unix pair of system calls: fork() and exec() and wait()
+
+fork() system call: 
+- create a new process 
+- fork creates a parent process which then forks and creates a child process (order depends on CPU scheduling algo if multithreading so nondeterministic)
+- forked process has: own registers, PC, its own value that gets returned from fork
+pid: process identifier
+
+Example: (see comments in p1.c in Mendeley)
+
+wait() system call:
+- sometimes it's useful for a parent process to wait for child process to finish (which it does through wait())
+- adding wait() delays parent process execution until child process finishes executing --- when child is done, wait() returns to the parent ---- DETERMINISTIC
+
+exec() system call:
+- run a program different from the calling program (call and branch to a separate program in a new process)
+- given the name of an executable and args, exec loads static text/data from that executable and overwrites current code segment; heap and stack are re-initialized
+- it runs the separate program by TRANSFORMING currently running program into a different running program
+- a successful call to exec() never returns (so it should really be the last thing in the program that calls exec() unless you exec() back to the caller)
+
+Using both exec() and fork():
+- essential in a Unix shell: let shell run code after call to fork() but before call to exec()
+- in a Unix shell: fork() to create a process, exec() to run a command (outside of the file), and wait() for the process to finish, then do it all over again and wait for a command from the prompt
+
+Process Control & Users:
+- other interfaces for interacting with processes: kill(), Ctrl+C (sends SIGINT), Ctrl+Z (sends SIGSTP)
+- security: only a user who has logged in can send signals such as Ctrl+C
+- superuser: can control all processes and should be used infrequently/with caution for security reasons
+
+Useful tools:
+- ps to see which processes are running
+- read man pages to see what flags to pass to ps
+- top is useful: CPU usage

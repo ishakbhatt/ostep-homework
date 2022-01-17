@@ -1,0 +1,13 @@
+1. Check the README for an example. Works similarly to a normal tree. Pop elements off the end.
+
+2. When the percentage is low, the likelihood of a process exiting is high. So, when this number is low, there will be less processes in the tree because many of them have already exited. When this percentage is high, a lot of the processes are still in the tree.
+
+3. a fork b, a fork c, b fork d, a fork e, b fork f
+
+4. d & e become child processes of a because c exited.
+
+5. Done
+
+6. Done
+
+ 
