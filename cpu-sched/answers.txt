@@ -1,0 +1,61 @@
+1. Compute response time and turnaround time when running three jobs of length 200 with SJF and FIFO
+FIFO -
+Resp: 
+	Job 0: 0
+	Job 1: 200
+	Job 2: 400
+Turnaround time:
+	Job 0: 200
+	Job 1: 400
+	Job 2: 600
+
+SJF -
+Turnaround and response times are the exact same
+regardless of if we use SJF or FIFO because all three jobs
+run for the same amount of time. If one of the tasks took
+slightly longer, then it would be the last task to run if we used the SJF
+scheduling algorithm.
+
+2. Do the same with 100, 200, 300 respectively.
+
+FIFO -
+Resp:
+	Job 0: 0
+	Job 1: 100
+	Job 2: 300
+Turnaround time:
+	Job 0: 100
+	Job 1: 300
+	Job 2: 600
+They could have arrived in any order for FIFO. The response & turnaround times would be different if
+they arrived in a different order.
+
+SJF -
+Resp:
+	Job 0: 0
+	Job 1: 100
+	Job 2: 300
+Turnaround time:
+	Job 0: 100
+	Job 1: 300
+	Job 2: 600
+This is the only set of response/turnaround times that the jobs can
+have if they were to run with the SJF algorithm. This is because the shortest
+jobs must run first
+
+
+3. Do the same but with RR scheduler and time-slice of 1
+Resp:
+	Job 0: 0
+	Job 1: 1
+	Job 2: 2
+Turnaround time:
+	Job 0: 558
+	Job 1: 559
+	Job 2: 600
+
+4. When all the jobs have the same runtime.
+5. All jobs have the same runtime and the quantum length is the same as the runtime of each job.
+6. As job lengths increase, the response time goes up. 
+7. The response time goes up because when the quantum length goes up, the first job can run for a little longer
+so time at which the second job starts running gets pushed back which then takes place for the third job.
