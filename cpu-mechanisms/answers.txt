@@ -1,0 +1,21 @@
+Homework (Measurement): Write code to measure OS or hardware performance
+measure costs of a system call and context switch. 
+How to measure cost of system call:
+- repeatedly call simple system call
+- time how long it takes
+- divide time by number of iterations
+
+typical timer to use: gettimeofday()
+- return time in microseconds since 1970
+- not precise, so use rdtsc on x86 machines
+
+how to measure cost of context switch:
+- run two processes on a single cpu
+- set up Unix two pipes between them
+- pipe is a way to communicate between processes:
+	- first process issues write to the first pipe & waits for read from second pipe
+	- OS puts first process in blocked state & switches to other proc
+	- second proc reads from first pipe and writes to second
+	- second proc gets blocked and context switches back
+- context switches measured with pipes & processes
+- on systems with more than one CPU: use sched_setaffinity() to bind process to particular processor

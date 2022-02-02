@@ -1,0 +1,57 @@
+Mechanism: Limited Direct Execution
+
+- achieve virtualization by time sharing the CPU
+	- performance challenge: how do we virtualize w/o adding excessive overhead
+	- control challenge: run processes efficiently while retaining control over the CPU --- process could run forever and take over machine/access info it shouldn't be allowed to
+
+- method: limited direct execution
+	- run program directly on the CPU
+	- when OS wishes to start program running, create process entry for it in process list
+	- allocate mem, load program code into memory, locates entry point (main), jump to it, and start running
+
+Problems w/ LDE and how to address them:
+
+1. Restricted Operations
+- Direct execution has the advantage of being fast since program runs natively on CPU and executes quickly
+- what if process wants to do restricted operatin?
+- solution: user mode -- code restricted in what it can do --vs kernel mode: privileged ops such as I/O requests
+	- user programs perform a system call: kernel carefully exposes key functionality to user programs (accessing file system, creating/destroying processes, etc)
+- how to execute system call:
+	- prog executes trap instruction
+	- insn jumps into kernel and raises privilege level to kernel mode
+	- when finished, return-from-trap insn executes and privilege level reduced
+- how the hardware handles memory in a system call it:
+	- save caller registers to return correctly (like a link register)
+	- proc pushes prog counter, flags, and other registers onto per-process kernel stack
+	- return-from-trap pops values off stack and resumes execution of user-mode program
+- kernel sets up trap table at boot table (ensure code doesn't just jump anywhere in kernel when in priv mode)
+	- OS tells hardware what code to run when certain exceptional events occur
+	- location of trap handlers are noted
+- system call: 
+	- system call number assigned to each call
+
+2. Switching between processes
+- can't easily switch between processes because when one process is running, OS is not so OS can't perform the switch
+one solution: wait for system calls from the process being executed --- not the best approach bc you can't rely on the OS to just perform the sys call
+second (better) solution: use a timing interrupt --- timer device programmed to interrupt every couple milliseconds. interrupt handler in the OS runs and the OS can do what it pleases --- stop the current process and start a new one
+
+more about the second solution:
+- OS must start the timer during boot
+- hardware has responsibility when an interrupt fires: save enough of the state of program running before interrupt fires so return-from-trap insn can resume to running program correctly
+
+saving & restoring context: 
+- scheduler: component of the OS that decides whether to continue running currently-running proc or to switch to a diff one (there are scheduling algos)
+- if switch: OS executes a context switch ---- save a few register values for currently executing proc and restore a few for soon-to-be-executing proc (ensures system goes to another process after return-from-trap instruction is executed)
+- OS executes assembly to save general purpose registers, PC, and kernel stack pointer of currently running process and restore those for the soon to be executing process
+- after assembly code executes and return-from-trap insn executes, other process starts and context switch complete
+
+two types of saves/restores:
+- timing interrupt occurs: user registers of running process saved by hardware
+- OS decides to switch: kernel registers saved by the software into memory in process structure of process (moves to - trapped into kernel from B)
+
+
+Concurrency: OS needs to handle when a timing interrupt happens when the OS decides to switch and vice versa
+- soln for now: OS disables interrupts during interrupt processing
+- there are also locking schemes
+
+

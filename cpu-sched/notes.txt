@@ -1,0 +1,54 @@
+OS has a component called a scheduler. The scheduler takes action based on
+a scheduling algorithm. Algorithm: policy
+
+Origin of scheduling policies: assembly lines, operations management
+
+need to make assumptions about the jobs to define scheduling algorithms:
+1. Each job runs for the same amount of time
+2. All jobs arrive at the same time
+3. Once started, job runs to completion (no context switching, syscalls, or interrupts)
+4. Jobs only use CPU
+5. Run-time of each job is known
+
+use a single metric: Turnaround time
+turnaround time: T_turnaround = T_completion - T_arrival
+the amount of time it takes a task to complete from start
+
+fairness is another metric: which jobs get priority
+
+ALGORITHM 1: First In, First Out
+the job that arrives first finishes first.
+
+since we assume that they all arrive around the same time,
+scheduler sees which arrives a hair before which. (miniscule difference)
+
+if we relax the assumption that they all run for the same amt of time,
+short jobs will take a while to finish. SO, create a new algorithm...
+
+ALGORITHM 2: Shortest Job First (Rate Monotonic)
+basically the job with the shortest runtime will run first and then they
+will all go in that order.
+
+if we relax the assumption that they all arrive at the same time, 
+then we're back at square 1 and the shortest jobs will run after the 
+long job when the long job arrives first. SO, create a new algo...
+
+ALGORITHM 3: Shortest Time to Completion First
+relax the assumption that the job needs to run to completion.
+
+long task gets run before a timer interrupt goes off, then other tasks can run
+
+assume we have a new metric: response time
+T_response = T_firstrun - T_arrival
+
+then the last task would always have the worst response time. SO, create a new algorithm...
+
+ALGORITHM 4: Round Robin
+- timer interrupt for all tasks so every few sections it moves to the next task in a circular buffer until finished
+- the lower the timer amt the better for response time, but worse as context switch can dominate performance
+
+What about I/O:
+when a task does an I/O retrieval from the disk, it takes a long time to return from the I/O operation.
+So we switch to the other task while waiting for the I/O request to be fulfilled.
+
+What if we relax the assumption that we know how long a task will take, then .... look at the next section :)
